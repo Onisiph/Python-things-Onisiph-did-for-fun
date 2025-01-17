@@ -1,7 +1,5 @@
 from tkinter import *
 from random import choice
-#from string import ascii_letters
-#import string
 import random
 import time
 
@@ -9,7 +7,7 @@ import time
 bg = "black"
 fg = "green"
 #All characters it can randomely choose
-letter_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890œ&é'([{#~-|è`_\ç^à@ù%*µ)]}=ê$£ë¥Ù³²¹¬ß®©»«ÔÎÛðæ±ÊøÂ¶ôîûýþ€åâ¡÷×¿§/.?ºẞ‘><ÖÏÜÐÆªËÄöïüÝÞÇ¢Åä¦†‡ඞƒñÑšžŸ¤™☺☻♣♠♥♦⌂♂♀⚧♪♫☼·•◘○◙↑↓←→↕↔↨▲▼◄►︿‹–—˜„‼…½¼¾‰║╣╗╝╚╔╠╦═╬┐└┴┬├─┼┤│∟¯┌┘ı█▄▀▬■░▒▓"#string.printable
+letter_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890œ&é'([{#~-|è`_\ç^à@ù%*µ}])=ê$£ë¥Ù³²¹¬ß®©»«ÔÎÛðæ±ÊøÂ¶ôîûýþ€åâ¡÷×¿§/.?ºẞ‘><ÖÏÜÐÆªËÄöïüÝÞÇ¢Åä¦†‡ඞƒñÑšžŸ¤™☺☻♣♠♥♦⌂♂♀⚧♪♫☼·•◘○◙↑↓←→↕↔↨▲▼◄►︿‹–—˜„‼…½¼¾‰║╣╗╝╚╔╠╦═╬┐└┴┬├─┼┤│∟¯┌┘ı█▄▀▬■░▒▓✔༒㋡☣"
 #A list of texts it can generate
 word_list_universal = ["Hello world", "ඞ︿ඞ", "I will conquer the world", "     ", ":3", "MOUAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA", "Test message", "Hellow world", "owo", "MAJUSCULES", "💖🌸👩‍💻", "🌟🌙🌠☄🌌", "Be gay do crimes", "Reject humanity become dragon", "Be neurodivergent"]
 word_list_french = ["Joyeux non-anniversaire!", "Mini jeu! Trouve le plus long!", "Mini jeu! Retiens la bonne combinaison!", "Je t'ai menti, j'ai installé un virus sur ton PC", "Je crois que ça a bugué, attend", "Ceci est un easter egg", "Félicitations", "Pas de chance", "J'ai pas envie", "PANIQUE", "AAAAAAAAAAA quel hasard", "Insérer prénom", "Quelle horreur", "Femboy ou fille trans?", "ÛÏ_îfIẞý<Vâ=Ô/0TH`Kôþ» oui ceci est voulu"]
@@ -21,14 +19,20 @@ if opti_choice:
     #An attempt to optimize the way it choose the characters (I have no idea if it works or not)
     N_letter = len(letter_str)
     N_letter = N_letter // opti_choice
-    #print(N_letter)
     letter_list = [letter_str[:N_letter]]
     for o in range(1, opti_choice-1):
         letter_list.append(letter_str[N_letter*o:N_letter*(o+1)])
     letter_list.append(letter_str[N_letter*(opti_choice-1):])
-    #letter_list = [letter_str[:N_letter], letter_str[N_letter:N_letter*2], letter_str[N_letter*2:N_letter*3], letter_str[N_letter*3:]]
-    print(letter_str)
-    print(letter_list)
+
+def Stopping_everything(b):
+    if b:
+        randomizer.config(state=NORMAL)
+        not_really_randomizer.config(state=NORMAL)
+        real_randomizer.config(state=NORMAL)
+    else:
+        randomizer.config(state=DISABLED)
+        not_really_randomizer.config(state=DISABLED)
+        real_randomizer.config(state=DISABLED)
 
 def language():
     '''Set up the language of the labels and texts (default to English)'''
@@ -63,7 +67,6 @@ def language():
         French_language.config(text = "Français")
     FR = French.get()
     EN = English.get()
-    #print(FR, EN)
     word_list = []
     for i in word_list_universal:
         word_list.append(i)
@@ -146,105 +149,95 @@ def different_number(n, f=5, s=25):
 def randomely_generated_text(length = None, affichage = True):
     '''Write a text of a length that you can decide (if there is no length, it take the number in the first entry)
     You can also decide if it will be printed in the shell'''
-    #print(Stop_everything)
     I_hope_there_will_be_a_lot_of_things_there()
-    if Stop_everything is False:
-        r = ""
-        temp_var = None
-        if length is None:
-            try:
-                rnb = int(random_number.get()) -1
-            except ValueError:
-                if French.get() == "Fake True" and English.get() == "Fake False":
-                    raise ValueError("Le nombre de caractères doit être un nombre, crétin")
-                else:
-                    raise ValueError("The number of characters must be a number, dumbass")
-        else:
-            rnb = length - 1
-            if not type(rnb) is int:
-                if French.get() == "Fake True" and English.get() == "Fake False":
-                    raise ValueError("Le nombre de caractères doit être un nombre, crétin")
-                else:
-                    raise ValueError("The number of characters must be a number, dumbass")
-        short_list = find_len(rnb+1)
-        #print(short_list)
-        if short_list != []:
-            if random.randint(1, 5) == 1:
-                testing = choice(short_list)
-                #print(testing)
-                randomely_choosen_text(testing)
+    r = ""
+    temp_var = None
+    if length is None:
+        try:
+            rnb = int(random_number.get()) -1
+        except ValueError:
+            if French.get() == "Fake True" and English.get() == "Fake False":
+                Stopping_everything(True)
+                raise ValueError("Le nombre de caractères doit être un nombre, crétin")
             else:
-                temp_var = "This is a str"
+                Stopping_everything(True)
+                raise ValueError("The number of characters must be a number, dumbass")
+    else:
+        rnb = length - 1
+        if not type(rnb) is int:
+            if French.get() == "Fake True" and English.get() == "Fake False":
+                Stopping_everything(True)
+                raise ValueError("Le nombre de caractères doit être un nombre, crétin")
+            else:
+                Stopping_everything(True)
+                raise ValueError("The number of characters must be a number, dumbass")
+    short_list = find_len(rnb+1)
+    if short_list != []:
+        if random.randint(1, 5) == 1:
+            testing = choice(short_list)
+            randomely_choosen_text(testing)
         else:
-            temp_var = "None"
-        if temp_var is not None:
-            for i in range(rnb):
-                r += optimized_choice()
-                for j in range(wait_is_50()):
-                    s = ''.join([optimized_choice() for k in range(rnb - i)])
-                    #print(s)
-                    random_text.config(text = (r+s))
-                    fenetre.update()
-                if affichage:
-                    print(r)
-                if now_you_can_see_the_length:
-                    word_length[0].config(text = str(len(r)+1))
+            temp_var = "This is a str"
+    else:
+        temp_var = "None"
+    if temp_var is not None:
+        for i in range(rnb):
+            r += optimized_choice()
+            for j in range(wait_is_50()):
+                s = ''.join([optimized_choice() for k in range(rnb - i)])
+                random_text.config(text = (r+s))
+                fenetre.update()
+            if affichage:
+                print(r)
+            if now_you_can_see_the_length:
+                word_length[0].config(text = str(len(r)+1))
+    Stopping_everything(True)
 
 def really_randomely_generated_text():
     '''A truly randomely generated text
     Yes, I know, it's logic'''
-    #print(Stop_everything)
     I_hope_there_will_be_a_lot_of_things_there()
-    if Stop_everything is False:
-        if random.randint(1, 5) == 1:
-            randomely_choosen_text()
-        else:
-            x = random.randint(1, 50)
-            r = ""
-            for i in range(x):
-                r += optimized_choice()
-                for j in range(wait_is_50()):
-                    s = ''.join([optimized_choice() for k in range(x - i)])
-                    #print(s)
-                    random_text.config(text = (r+s))
-                    fenetre.update()
-                print(r)
-                if now_you_can_see_the_length:
-                    word_length[0].config(text = str(len(r)+1))
+    if random.randint(1, 5) == 1:
+        randomely_choosen_text()
+    else:
+        x = random.randint(1, 50)
+        r = ""
+        for i in range(x):
+            r += optimized_choice()
+            for j in range(wait_is_50()):
+                s = ''.join([optimized_choice() for k in range(x - i)])
+                random_text.config(text = (r+s))
+                fenetre.update()
+            print(r)
+            if now_you_can_see_the_length:
+                word_length[0].config(text = str(len(r)+1))
+    Stopping_everything(True)
 
 def not_really_randomized_text():
     '''This one just write the text you want to write
-    But only if you write it ine the second entry'''
-    #print(Stop_everything)
+    But only if you write it in the second entry'''
     I_hope_there_will_be_a_lot_of_things_there()
-    if Stop_everything is False:
-        final_text = not_random_text.get()
-        M = Memory.get()
-        PM = PastMemory.get()
-        #print(M)
-        #print(PM)
-        #print(final_text not in word_list)
-        #print(PM == "Fake True" and final_text not in word_list)
-        if PM == "Fake True" and final_text not in word_list:
-            #print(final_text)
-            word_list_universal.append(final_text)
-            word_list.append(final_text)
-            save(final_text)
-        elif M == "Fake True" and final_text not in word_list:
-            #print(final_text)
-            word_list_universal.append(final_text)
-            word_list.append(final_text)
-        N_txt = len(final_text)
-        r = ""
-        for i in range(N_txt):
-            r += final_text[i]
-            for j in range(wait_is_50()):
-                s = ''.join([optimized_choice() for k in range(N_txt - i - 1)])
-                #print(s)
-                random_text.config(text = (r+s))
-                fenetre.update()
-            if now_you_can_see_the_length:
-                word_length[0].config(text = str(len(r)))
+    final_text = not_random_text.get()
+    M = Memory.get()
+    PM = PastMemory.get()
+    if PM == "Fake True" and final_text not in word_list:
+        word_list_universal.append(final_text)
+        word_list.append(final_text)
+        save(final_text)
+    elif M == "Fake True" and final_text not in word_list:
+        word_list_universal.append(final_text)
+        word_list.append(final_text)
+    N_txt = len(final_text)
+    r = ""
+    for i in range(N_txt):
+        r += final_text[i]
+        for j in range(wait_is_50()):
+            s = ''.join([optimized_choice() for k in range(N_txt - i - 1)])
+            random_text.config(text = (r+s))
+            fenetre.update()
+        if now_you_can_see_the_length:
+            word_length[0].config(text = str(len(r)))
+    Stopping_everything(True)
 
 def randomely_choosen_text(txt = None, affichage = True):
     '''This one choose a text in the word_list
@@ -272,15 +265,12 @@ def randomely_choosen_text(txt = None, affichage = True):
             s = ''.join([optimized_choice() for k in range(N_txt - i - 1)])
             random_text.config(text = (r+s))
             fenetre.update()
-        #if word_list[-1] == final_text:
         if affichage:
             print(r)
         if now_you_can_see_the_length:
             word_length[0].config(text = str(len(r)))
-        all_text_event = ["Femboy ou fille trans?", "Femboy or trans girl?", "Insérer prénom", "Insert name", "Mini jeu! Trouve le plus long!", "Minigame! Remember the password!", "Mini jeu! Retiens la bonne combinaison!", "Je crois que ça a bugué, attend", "Wait, I think there is a problem"]
-        if  final_text in all_text_event and Stop_everything is False:
-            Stop_everything = True
         if r == "Je crois que ça a bugué, attend" or r == "Wait, I think there is a problem":
+            Stop_everything = True
             time.sleep(5)
             if r == "Je crois que ça a bugué, attend":#French.get() == "Fake True":
                 write("Ouep, je confirme")
@@ -289,6 +279,7 @@ def randomely_choosen_text(txt = None, affichage = True):
             time.sleep(0.5)
             fenetre.destroy()
         elif r == "Femboy or trans girl?" or r == "Femboy ou fille trans?":
+            Stop_everything = True
             def F_or_F(choice):
                 global Stop_everything
                 global SUPREMACY
@@ -297,6 +288,7 @@ def randomely_choosen_text(txt = None, affichage = True):
                     word_list.append(SUPREMACY)
                 F_choice_window.destroy()
                 Stop_everything = False
+                Stopping_everything(True)
             F_choice_window = Tk()
             F_choice_window.title(r)
             f_X = fenetre.winfo_x()
@@ -310,12 +302,11 @@ def randomely_choosen_text(txt = None, affichage = True):
             F_choice_window.attributes("-topmost", True)
             F_choice_window.protocol("WM_DELETE_WINDOW", disable_event)
             Femboy_button = Button(F_choice_window, width = size_X//55, height=size_Y//800, font=("Helvetica", size_X//10), text="femboy!", command=lambda t = "FEMBOY": F_or_F(t), foreground=fg, background=bg)
-            #Femboy_button.pack(expand=True)
             Femboy_button.grid(row = 0, column = 0, pady = 10)
             Trans_girl_button = Button(F_choice_window, width = size_X//55, height=size_Y//800, font=("Helvetica", size_X//10), text=r[10:-1]+"!", command=lambda t = "TRANS GIRL": F_or_F(t), foreground=fg, background=bg)
-            #Trans_girl_button.pack(expand=True)
             Trans_girl_button.grid(row = 2, column = 0, pady = 10)
         elif r == "Insert name" or r == "Insérer prénom":
+            Stop_everything = True
             def your_name():
                 global Stop_everything
                 name = str(entry_name.get())
@@ -323,6 +314,7 @@ def randomely_choosen_text(txt = None, affichage = True):
                 word_list.append("Hello " + name)
                 name_window.destroy()
                 Stop_everything = False
+                Stopping_everything(True)
             name_window = Tk()
             name_window.title(r)
             f_X = fenetre.winfo_x()
@@ -345,6 +337,7 @@ def randomely_choosen_text(txt = None, affichage = True):
             Virus = True
             Virus_T = int(time.time())
         elif (r == "Mini jeu! Retiens la bonne combinaison!" or r == "Minigame! Remember the password!") and memory_password == "Not_defined_yet":
+            Stop_everything = True
             time.sleep(0.5)
             #nine_characters = "☼♣♪♠☺♥♫♦⌂"
             nine_characters = ""
@@ -371,8 +364,6 @@ def randomely_choosen_text(txt = None, affichage = True):
             print(f_X, f_Y, f_W, f_H)
             size_X = f_W // 4
             size_Y = f_H // 4
-            '''max_X = f_X + f_W - size_X
-            max_Y = f_Y + f_H - size_Y'''
             nb_w = 0
             def define_pos(f, size, h):
                 return (f+(size*(h-1)))+((size//2)*(h-1))
@@ -399,6 +390,7 @@ def randomely_choosen_text(txt = None, affichage = True):
             memory_game_windows[0].geometry(f"{size_X}x{size_Y}+{define_pos(f_X, size_X, 1)}+{define_pos(f_Y, size_Y, 1)}")
             memory_game_buttons[0].update()
         elif (r == "Mini jeu! Trouve le plus long!" or r == "Minigame! Find the longest!") and now_you_can_see_the_length is False:
+            Stop_everything = True
             first = random.randint(5, 25)
             second = different_number(first)
             time.sleep(1.5)
@@ -444,28 +436,18 @@ def randomely_choosen_text(txt = None, affichage = True):
                 second_word_label.pack(expand=True)
             first_word[0].update()
             second_word[0].update()
+    if Stop_everything is False:
+        Stopping_everything(True)
 
 def write(txt = None, affichage = True):
     '''This one's purpose is to use the randomely_choosen_text fonction without having a super long name
     It also bypass the Stop_everything feature (which stop button from working is it is at True)'''
-    global Stop_everything
-    if Stop_everything:
-        Stop_everything = False
-        randomely_choosen_text(txt, affichage)
-        Stop_everything = True
-    else:
-        randomely_choosen_text(txt, affichage)
+    randomely_choosen_text(txt, affichage)
 
 def count(length = None, affichage = True):
     '''This one's purpose is to use the randomely_generated_text fonction without having a super long name
     It also bypass the Stop_everything feature (which stop button from working is it is at True)'''
-    global Stop_everything
-    if Stop_everything:
-        Stop_everything = False
-        randomely_generated_text(length, affichage)
-        Stop_everything = True
-    else:
-        randomely_generated_text(length, affichage)
+    randomely_generated_text(length, affichage)
 
 def wait(fl):
     '''The only use of this fonction is because sometime I type "wait" instead of "time.sleep"
@@ -489,13 +471,10 @@ def Nostalgia():
             f = open("Lots of different texts.txt", "r")
         text = remove_last(f.readline())
         while text != "":
-            #randomely_choosen_text(text)
             word_list_universal.append(text)
             word_list.append(text)
             text = remove_last(f.readline())
-            #time.sleep(0.5)
         f.close()
-        #print(word_list)
 
 def save(txt):
     '''This one is linked to the nostalgia function, it's used to save the user-writed texts in the .txt file'''
@@ -511,13 +490,6 @@ def save(txt):
         f.write(i)
     f.write(txt + "\n")
     f.close()
-    '''f = open("Lots of different texts.txt", "r")
-    text = f.readline()
-    #print(text)
-    while text != "":
-        #print(text)
-        text = f.readline()
-    f.close()'''
 
 def letters(n):
     '''This one is to do the glitchy effect in the "virus" windows'''
@@ -581,6 +553,7 @@ def memory_minigame(cha):
     if memory_password == "":
         destroy_everything()
         Stop_everything = False
+        Stopping_everything(True)
         add_four_changing_color_mechanics = 0
         Now_you_can_change_colors.append(Label(fenetre, width=50, text = "Change the colors (Backgroud color and text color)", foreground=fg, background=bg))
         Now_you_can_change_colors[add_four_changing_color_mechanics].grid(row=Ligne, column=0,pady=10)
@@ -599,28 +572,12 @@ def memory_minigame(cha):
         add_four_changing_color_mechanics += 1
         Ligne += 1
         language()
-        '''color_label = Label(fenetre, width=50, text = "Change the colors (Respectively backgroud color and foreground/text color)", foreground=fg, background=bg)
-        color_label.grid(row=Ligne, column=0,pady=10)
-        Ligne += 1
-        background_changer = Entry(fenetre, width = 13, textvariable=background_color)
-        background_changer.grid(row=Ligne, column=0,pady=10)
-        Ligne += 1
-        foregound_changer = Entry(fenetre, width = 13, textvariable=foregound_color)
-        foregound_changer.grid(row=Ligne, column=0,pady=10)
-        Ligne += 1
-        color_changer = Button(fenetre, text="changing color", width=20, command=changing_the_color, foreground=fg, background=bg)
-        color_changer.grid(row=Ligne, column=0,pady=10)
-        Ligne += 1'''
         
 def changing_the_color(b = None, f = None):
     '''Ever wanted to change the color of everything on the windows? Use that function!
     You can each use the entries added by the memory minigame or enter the colors manually by calling the function'''
     global bg
     global fg
-    '''global color_label
-    global background_changer
-    global foregound_changer
-    global color_changer'''
     if b is None:
         bg = background_color.get()
     else:
@@ -644,10 +601,6 @@ def changing_the_color(b = None, f = None):
             i.config(background = bg, foreground = fg)
         English_language.config(foreground = fg, background = bg)
         French_language.config(foreground = fg, background = bg)
-        '''color_label.config(foreground = fg, background = bg)
-        background_changer.config(foreground = fg, background = bg)
-        foregound_changer.config(foreground = fg, background = bg)
-        color_changer.config(foreground = fg, background = bg)'''
         if now_you_can_see_the_length:
             word_length[0].config(background = bg, foreground = fg)
     except TclError:
@@ -673,15 +626,22 @@ def longest_minigame(a):
         Ligne += 1
         fenetre.update()
         Stop_everything = False
+        Stopping_everything(True)
     else:
         destroy_everything()
-        write("Raté!")
+        if English.get():
+            write("Too bad!")
+        elif French.get():
+            write("Raté!")
+        else:
+            write("Too bad!")
         time.sleep(1.5)
         fenetre.destroy()
 
 def I_hope_there_will_be_a_lot_of_things_there():
     '''I guess there's not a lot of things there
     This function was supposed to be used to put all the functions that I want to use everytime a button is clicked'''
+    Stopping_everything(False)
     you_got_a_virus()
 
 if True: #Every events variables
@@ -708,63 +668,77 @@ if True: #Window initialisation
     fenetre = Tk()
     fenetre.geometry("1500x750+100+100")
     fenetre.configure(background=bg)
+    fenetre.title("Generate text with a cool animation")
 
 if True: #All stringVar
     random_number = StringVar(fenetre)
     not_random_text = StringVar(fenetre)
     number_of_waiting = StringVar(fenetre)
-    Memory = StringVar(fenetre, 'Fake True')
+    Memory = StringVar(fenetre, 'Fake False')
     PastMemory = StringVar(fenetre, 'Fake False')
     background_color = StringVar(fenetre)
     foregound_color = StringVar(fenetre)
-    French = StringVar(fenetre, 'Fake True')
+    French = StringVar(fenetre, 'Fake False')
     English = StringVar(fenetre, 'Fake True')
 
 if True: #Base widgets
     Ligne = 0
     random_text = Label(fenetre, text = "", font=("Helvetica", 60), foreground=fg, background=bg)
-    #random_text.pack(expand=True)
     random_text.grid(row=Ligne, column=0,pady=10)
     Ligne += 1
+    
     first_thing = Label(fenetre, width=40, text="How many characters do you want to generate?", foreground=fg, background=bg)
     first_thing.grid(row=Ligne, column=0, pady=10)
     Ligne += 1
+    
     how_randomized = Entry(fenetre, width=13, textvariable=random_number)#, foreground="red", background="#000000")
     how_randomized.grid(row=Ligne, column=0, pady=10)
     Ligne += 1
+    
     randomizer = Button(fenetre, text="randomizing", width=20, command=randomely_generated_text, foreground=fg, background=bg)
     randomizer.grid(row=Ligne, column=0, pady=10)
     Ligne += 1
+    
     second_thing = Label(fenetre, width=40, text="What text do you want to generate?", foreground=fg, background=bg)
     second_thing.grid(row=Ligne, column=0, pady=10)
     Ligne += 1
+    
     what_final_text = Entry(fenetre, width = 13, textvariable=not_random_text)
     what_final_text.grid(row = Ligne, column = 0, pady = 10)
     Ligne += 1
+    
     not_really_randomizer = Button(fenetre, text="generate text",width = 20, command=not_really_randomized_text, foreground=fg, background=bg)
     not_really_randomizer.grid(row = Ligne, column = 0, pady = 10)
     Ligne += 1
+    
     real_randomizer = Button(fenetre, text="real randomizing", width=20, command=really_randomely_generated_text, foreground=fg, background=bg)
     real_randomizer.grid(row=Ligne, column=0, pady=10)
     Ligne += 1
+    
     last_thing = Label(fenetre, width=40, text="How much waiting between each character", foreground=fg, background=bg)
     last_thing.grid(row = Ligne, column = 0, pady = 10)
     Ligne += 1
+    
     how_much_waiting = Entry(fenetre, width = 13, textvariable=number_of_waiting)
     how_much_waiting.grid(row = Ligne, column = 0, pady = 10)
     Ligne += 1
+    
     MemoryCheck = Checkbutton(fenetre, text="Memory", variable = Memory, onvalue='Fake True', offvalue='Fake False', foreground=fg, background=bg)
     MemoryCheck.grid(row=Ligne, column = 0)
     Ligne += 1
+    
     PastMemoryCheck = Checkbutton(fenetre, text="Past Memory", variable = PastMemory, onvalue='Fake True', offvalue='Fake False', foreground=fg, background=bg, command=Nostalgia)
     PastMemoryCheck.grid(row=Ligne, column = 0)
     Ligne += 1
+    
     English_language = Checkbutton(fenetre, text="English", variable=English, onvalue="Fake True", offvalue="Fake False", foreground=fg, background=bg, command=language)
     English_language.grid(row=Ligne, column = 0)
     Ligne += 1
+    
     French_language = Checkbutton(fenetre, text="French", variable=French, onvalue="Fake True", offvalue="Fake False", foreground=fg, background=bg, command=language)
     French_language.grid(row=Ligne, column = 0)
     Ligne += 1
+    
     fenetre.update()
 
 language()
