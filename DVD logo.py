@@ -13,7 +13,7 @@ fg_color = "white"
 
 Win_choice = Tk()
 Win_choice.title("Windows configuration")
-Win_choice.geometry("540x530+50+50")
+Win_choice.geometry("560x530+50+50")
 Win_choice.config(background = bg_color)
 
 if True: #All variables
